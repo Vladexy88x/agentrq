@@ -249,6 +249,7 @@ describe('formatCron', () => {
 
   it('hands back anything it cannot describe', () => {
     expect(formatCron('0 9 1,15 6 *')).toBe('ONE-TIME')
+    expect(formatCron('0 9 * 6 *')).toBe('0 9 * 6 *')
     expect(formatCron('not a cron')).toBe('not a cron')
   })
 
