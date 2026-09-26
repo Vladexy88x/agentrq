@@ -64,14 +64,10 @@ export function useCron() {
         const hours = cHour.split(',');
         if (!hours.every(plain)) return cron;
         if (hours.length === 1) return `Daily at ${timeStr}`;
-        const times = [timeStr];
-        for (let i = 1; i < hours.length; i++) {
-          const t = interval.next().toDate();
-          times.push(`${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')}`);
-        }
-        times.sort();
-        if (times.length === 2) return `Twice a day at ${times[0]} & ${times[1]}`;
-        return `${times.length} times a day at ${times.join(', ')}`;
+        // The next-run line already shows the time, so this stays short
+        // enough to sit beside the title on a phone.
+        if (hours.length === 2) return 'Twice daily';
+        return `${hours.length}× daily`;
       }
     } catch (e) {}
 

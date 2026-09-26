@@ -22,7 +22,7 @@ const local = (utcHour, utcMin = 0) => {
 }
 
 // The task form's "Repeat" dropdown writes these crons (TaskFormView.vue),
-// and the task list and the schedule page show formatCron's label for them.
+// and the schedule page shows formatCron's label for them.
 describe('formatCron labels every schedule the task form can create', () => {
   it('labels the presets it already knows', () => {
     expect(formatCron('*/15 * * * *')).toBe('Every 15m')
@@ -35,14 +35,12 @@ describe('formatCron labels every schedule the task form can create', () => {
     expect(formatCron('0 */2 * * *')).toBe('Every 2h')
   })
 
-  it('labels "Twice a day" with both of its times, not daily', () => {
-    const [a, b] = [local(9), local(21)].sort()
-    expect(formatCron('0 9,21 * * *')).toBe(`Twice a day at ${a} & ${b}`)
+  it('labels "Twice a day" as twice daily, not daily', () => {
+    expect(formatCron('0 9,21 * * *')).toBe('Twice daily')
   })
 
-  it('names every time of a schedule that runs more than twice a day', () => {
-    const times = [local(0), local(8), local(16)].sort().join(', ')
-    expect(formatCron('0 0,8,16 * * *')).toBe(`3 times a day at ${times}`)
+  it('counts the runs of a schedule that runs more than twice a day', () => {
+    expect(formatCron('0 0,8,16 * * *')).toBe('3× daily')
   })
 
   it('shows the cron itself rather than call anything else daily', () => {
